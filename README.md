@@ -1,5 +1,12 @@
-Awesome
-http://pypi.python.org/pypi/Python%20Shapefile%20Library/0.9
+# SHPtoSVG
 
-Nearly Awesome
+## Prerequisites
+
+   pip3 install --user pyshp
+
+Get shapefile for Earth from
 http://www.naturalearthdata.com/downloads/110m-physical-vectors/
+
+## Running it
+
+code/shptosvg thing.shp > thing.svg

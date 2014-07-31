@@ -9,6 +9,7 @@
 Convert the shapefile to SVG.
 """
 
+import math
 import sys
 
 # http://geospatialpython.com/2010/11/introducing-python-shapefile-library.html
@@ -22,6 +23,17 @@ def equir2(ps):
         y += 90
         x *= 2.0
         y *= 2.0
+        yield x,y
+
+def eqarea(ps):
+    """(cylindrical) equal area projection."""
+
+    for x,y in ps:
+        x += 180
+        y = math.sin(math.radians(y))
+        y += 1.0
+        y *= 180.0
+        x *= 2.0
         yield x,y
 
 def tosvg(fname, out=sys.stdout, transform=equir2):
@@ -55,11 +67,17 @@ def tosvg(fname, out=sys.stdout, transform=equir2):
     out.write("</svg>\n")
 
 def main(argv=None):
+    import getopt
     import sys
     if argv is None:
         argv = sys.argv
+    opt,arg = getopt.getopt(argv[1:], '', ['transform='])
+    kwargs = {}
+    for k,v in opt:
+        if k == '--transform':
+            kwargs['transform'] = globals()[v]
 
-    return tosvg(argv[1])
+    return tosvg(arg[0], **kwargs)
 
 if __name__ == '__main__':
     main()
